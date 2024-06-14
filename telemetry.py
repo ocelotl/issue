@@ -30,15 +30,17 @@ class Telemetry:
                     Histogram: AggregationTemporality.DELTA
                 }
             ),
-            export_interval_millis=15000)
+            export_interval_millis=1000
+        )
         console_metric_reader = PeriodicExportingMetricReader(
             ConsoleMetricExporter(
                 preferred_temporality={Histogram: AggregationTemporality.DELTA}
-            )
+            ),
+            export_interval_millis=10
         )
-        console_metric_reader
+        otlp_metric_reader
         provider = MeterProvider(
-            metric_readers=[otlp_metric_reader],
+            metric_readers=[console_metric_reader],
             views=[
                 View(
                     instrument_name="*",
