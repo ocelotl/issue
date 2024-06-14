@@ -4,13 +4,9 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-opentelemetry-api = "*"
-opentelemetry-sdk = "*"
-opentelemetry-proto = "*"
-opentelemetry-semantic-conventions = "*"
-opentelemetry-exporter-otlp-proto-common = "*"
-opentelemetry-exporter-otlp-proto-grpc = "*"
-opentelemetry-exporter-otlp-proto-http = "*"
+opentelemetry-api = {file = "../opentelemetry-python/opentelemetry-api", editable = true}
+opentelemetry-semantic-conventions = {file = "../opentelemetry-python/opentelemetry-semantic-conventions", editable = true}
+opentelemetry-sdk = {file = "../opentelemetry-python/opentelemetry-sdk", editable = true}
 
 [dev-packages]
 pytest = "*"
