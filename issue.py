@@ -12,21 +12,31 @@ from opentelemetry.exporter.otlp.proto.grpc.metric_exporter import (
     OTLPMetricExporter,
 )
 from opentelemetry.sdk.metrics.view import View
-from opentelemetry.sdk.metrics.view import ExponentialBucketHistogramAggregation
+from opentelemetry.sdk.metrics.view import (
+    ExponentialBucketHistogramAggregation
+)
 
 
 class Telemetry:
-    def __init__(self, target_endpoint="http://localhost:4317/v1/metrics", insecure=True):
+    def __init__(
+        self, target_endpoint="http://localhost:4317/v1/metrics", insecure=True
+    ):
         otlp_metric_reader = PeriodicExportingMetricReader(
             OTLPMetricExporter(
                 endpoint=target_endpoint,
                 insecure=insecure,
                 timeout=4,
-                preferred_temporality={Histogram: AggregationTemporality.DELTA}),
+                preferred_temporality={
+                    Histogram: AggregationTemporality.DELTA
+                }
+            ),
             export_interval_millis=15000)
-        console_metric_reader = PeriodicExportingMetricReader(ConsoleMetricExporter(
-            preferred_temporality={Histogram: AggregationTemporality.DELTA}
-        ))
+        console_metric_reader = PeriodicExportingMetricReader(
+            ConsoleMetricExporter(
+                preferred_temporality={Histogram: AggregationTemporality.DELTA}
+            )
+        )
+        console_metric_reader
         provider = MeterProvider(
             metric_readers=[otlp_metric_reader],
             views=[
