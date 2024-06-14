@@ -11,9 +11,11 @@ opentelemetry-semantic-conventions = "*"
 opentelemetry-exporter-otlp-proto-common = "*"
 opentelemetry-exporter-otlp-proto-grpc = "*"
 opentelemetry-exporter-otlp-proto-http = "*"
-pytest = "*"
 
 [dev-packages]
+pytest = "*"
+ipdb = "*"
+pdbpp = "*"
 
 [requires]
 python_version = "3.11"

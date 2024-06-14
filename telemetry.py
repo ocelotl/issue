@@ -6,6 +6,7 @@ from opentelemetry.sdk.metrics import (
 from opentelemetry.sdk.metrics.export import (
     AggregationTemporality,
     ConsoleMetricExporter,
+    InMemoryMetricReader,
     PeriodicExportingMetricReader,
 )
 from opentelemetry.exporter.otlp.proto.grpc.metric_exporter import (
@@ -21,6 +22,11 @@ class Telemetry:
     def __init__(
         self, target_endpoint="http://localhost:4317/v1/metrics", insecure=True
     ):
+        self.in_memory_metric_reader = InMemoryMetricReader(
+            preferred_temporality={
+                Histogram: AggregationTemporality.CUMULATIVE
+            }
+        )
         otlp_metric_reader = PeriodicExportingMetricReader(
             OTLPMetricExporter(
                 endpoint=target_endpoint,
@@ -39,8 +45,9 @@ class Telemetry:
             export_interval_millis=10
         )
         otlp_metric_reader
+        console_metric_reader
         provider = MeterProvider(
-            metric_readers=[console_metric_reader],
+            metric_readers=[self.in_memory_metric_reader],
             views=[
                 View(
                     instrument_name="*",
