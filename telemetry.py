@@ -4,22 +4,22 @@ from opentelemetry.sdk.metrics import (
     MeterProvider
 )
 from opentelemetry.sdk.metrics.export import (
-    AggregationTemporality,
     InMemoryMetricReader,
 )
 from opentelemetry.sdk.metrics.view import View
-from opentelemetry.sdk.metrics.view import (
-    ExponentialBucketHistogramAggregation
-)
 
 
 class Telemetry:
     def __init__(
-        self, target_endpoint="http://localhost:4317/v1/metrics", insecure=True
+        self,
+        aggregation,
+        aggregation_temporality,
+        meter_name,
+        histogram_name,
     ):
         self.in_memory_metric_reader = InMemoryMetricReader(
             preferred_temporality={
-                Histogram: AggregationTemporality.CUMULATIVE
+                Histogram: aggregation_temporality
             }
         )
         provider = MeterProvider(
@@ -27,18 +27,16 @@ class Telemetry:
             views=[
                 View(
                     instrument_name="*",
-                    aggregation=ExponentialBucketHistogramAggregation()
+                    aggregation=aggregation
                 )
             ],
         )
 
         metrics.set_meter_provider(provider)
-        meter = metrics.get_meter("pivideo.meter")
+        meter = metrics.get_meter(meter_name)
 
-        self.frame_latency = meter.create_histogram(
-            name="calls",
-            unit="ns",
-            description="function calls",
+        self.histogram = meter.create_histogram(
+            name=histogram_name
         )
 
     def record_frame_latency(self, latency_ns, **kwargs):
