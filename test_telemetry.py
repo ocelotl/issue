@@ -30,7 +30,7 @@ def test_telemetry_exponential_delta():
 
     print()
 
-    for i in range(4):
+    for i in range(6):
         telemetry.histogram.record(i)
         metrics_data = telemetry.in_memory_metric_reader.get_metrics_data()
 
@@ -65,7 +65,7 @@ def test_telemetry_explicit_delta():
 
     print()
 
-    for i in range(5):
+    for i in range(6):
         telemetry.histogram.record(i)
         metrics_data = telemetry.in_memory_metric_reader.get_metrics_data()
 
@@ -100,7 +100,7 @@ def test_telemetry_exponential_cumulative():
 
     print()
 
-    for i in range(4):
+    for i in range(6):
         telemetry.histogram.record(i)
         metrics_data = telemetry.in_memory_metric_reader.get_metrics_data()
 
@@ -135,7 +135,7 @@ def test_telemetry_explicit_cumulative():
 
     print()
 
-    for i in range(5):
+    for i in range(6):
         telemetry.histogram.record(i)
         metrics_data = telemetry.in_memory_metric_reader.get_metrics_data()
 
