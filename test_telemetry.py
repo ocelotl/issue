@@ -19,6 +19,38 @@ def reset_metrics_globals() -> None:
     metrics_api._PROXY_METER_PROVIDER = _ProxyMeterProvider()
 
 
+def print_times(telemetry):
+
+    print()
+
+    for i in range(6):
+        telemetry.histogram.record(i)
+        metrics_data = telemetry.in_memory_metric_reader.get_metrics_data()
+
+        start_time_unix_nano = (
+            metrics_data.
+            resource_metrics[0].
+            scope_metrics[0].
+            metrics[0].
+            data.
+            data_points[0].
+            start_time_unix_nano
+        )
+        time_unix_nano = (
+            metrics_data.
+            resource_metrics[0].
+            scope_metrics[0].
+            metrics[0].
+            data.data_points[0].
+            time_unix_nano
+        )
+
+        print(f"start_time_unix_nano:\t{start_time_unix_nano}")
+        print(f"time_unix_nano:\t\t{time_unix_nano}")
+
+    print()
+
+
 def test_telemetry_exponential_delta():
     reset_metrics_globals()
     telemetry = Telemetry(
@@ -28,30 +60,7 @@ def test_telemetry_exponential_delta():
         "exponential_delta_histogram",
     )
 
-    print()
-
-    for i in range(6):
-        telemetry.histogram.record(i)
-        metrics_data = telemetry.in_memory_metric_reader.get_metrics_data()
-
-        print(
-            (
-                metrics_data.
-                resource_metrics[0].
-                scope_metrics[0].
-                metrics[0].
-                data.
-                data_points[0].
-                start_time_unix_nano,
-                metrics_data.
-                resource_metrics[0].
-                scope_metrics[0].
-                metrics[0].
-                data.data_points[0].
-                time_unix_nano
-            )
-        )
-    print()
+    print_times(telemetry)
 
 
 def test_telemetry_explicit_delta():
@@ -63,30 +72,7 @@ def test_telemetry_explicit_delta():
         "explicit_delta_histogram"
     )
 
-    print()
-
-    for i in range(6):
-        telemetry.histogram.record(i)
-        metrics_data = telemetry.in_memory_metric_reader.get_metrics_data()
-
-        print(
-            (
-                metrics_data.
-                resource_metrics[0].
-                scope_metrics[0].
-                metrics[0].
-                data.
-                data_points[0].
-                start_time_unix_nano,
-                metrics_data.
-                resource_metrics[0].
-                scope_metrics[0].
-                metrics[0].
-                data.data_points[0].
-                time_unix_nano
-            )
-        )
-    print()
+    print_times(telemetry)
 
 
 def test_telemetry_exponential_cumulative():
@@ -98,30 +84,7 @@ def test_telemetry_exponential_cumulative():
         "exponential_cumulative_histogram",
     )
 
-    print()
-
-    for i in range(6):
-        telemetry.histogram.record(i)
-        metrics_data = telemetry.in_memory_metric_reader.get_metrics_data()
-
-        print(
-            (
-                metrics_data.
-                resource_metrics[0].
-                scope_metrics[0].
-                metrics[0].
-                data.
-                data_points[0].
-                start_time_unix_nano,
-                metrics_data.
-                resource_metrics[0].
-                scope_metrics[0].
-                metrics[0].
-                data.data_points[0].
-                time_unix_nano
-            )
-        )
-    print()
+    print_times(telemetry)
 
 
 def test_telemetry_explicit_cumulative():
@@ -133,27 +96,4 @@ def test_telemetry_explicit_cumulative():
         "explicit_cumulative_histogram"
     )
 
-    print()
-
-    for i in range(6):
-        telemetry.histogram.record(i)
-        metrics_data = telemetry.in_memory_metric_reader.get_metrics_data()
-
-        print(
-            (
-                metrics_data.
-                resource_metrics[0].
-                scope_metrics[0].
-                metrics[0].
-                data.
-                data_points[0].
-                start_time_unix_nano,
-                metrics_data.
-                resource_metrics[0].
-                scope_metrics[0].
-                metrics[0].
-                data.data_points[0].
-                time_unix_nano
-            )
-        )
-    print()
+    print_times(telemetry)
